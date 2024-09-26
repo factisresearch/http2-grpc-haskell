@@ -1,0 +1,17 @@
+resolver: lts-22.34
+allow-newer: true
+packages:
+  - http2-grpc-types
+  - http2-grpc-proto-lens
+  - http2-grpc-proto3-wire
+  - warp-grpc
+  - http2-client-grpc
+  - bench-tool
+extra-deps:
+  - http2-client-0.10.0.2
+  - proto3-wire-1.4.3
+  - word-compat-0.0.6
+  - recv-0.1.0
+  - http2-5.0.1
+  - warp-tls-3.4.6
+  - warp-3.3.31
