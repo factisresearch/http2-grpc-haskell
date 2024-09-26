@@ -6,8 +6,6 @@ packages:
   - http2-grpc-types
   - warp-grpc
 extra-deps:
-  #- git: https://github.com/lucasdicioccio/http2-client
-  #  commit: 046b1f23ea547b75f1a3dc3d878603968bff4fb4
-  - http2-client-0.10.0.0
+  - http2-client-0.10.0.2
   - proto3-wire-1.1.0
 allow-newer: true
