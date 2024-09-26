@@ -1,11 +1,15 @@
 # haskell-grpc-native
 
+**NOTE:** This is meqo's fork of [http2-grpc-haskell](https://github.com/haskell-grpc-native/http2-grpc-haskell)
+tvh issued a couple of PRs in the repo, which never got accepted.
+Then sw decided while porting everything to stackage lts-22 to continue the fork.
+
 This organization and repository aim at providing unofficial
 [gRPC](https://grpc.io/) implementations for Haskell using native libraries.
 
 ## Context
 
-Haskell is not an [officially supported gRPC language](https://packages.grpc.io/). 
+Haskell is not an [officially supported gRPC language](https://packages.grpc.io/).
 This repository offers a set of libraries that are compatible with gRPC. A main
 goal of this initiative is that an intermediate Haskell developper should find
 the packages reasonably easy to install and easy to tinker with.
@@ -47,4 +51,3 @@ _types_ package in your client/server applications.
 
 There is a [low-level API](https://github.com/grpc/grpc-haskell) in the official gRPC repository.
 There also is a [more-complete API](https://github.com/awakesecurity/gRPC-haskell) which uses a binding to the C-library and which is supported by AwakeSecurity.
-
