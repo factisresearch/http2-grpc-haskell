@@ -1,8 +1,13 @@
-# haskell-grpc-native
-
 **NOTE:** This is meqo's fork of [http2-grpc-haskell](https://github.com/haskell-grpc-native/http2-grpc-haskell)
-tvh issued a couple of PRs in the repo, which never got accepted.
-Then sw decided while porting everything to stackage lts-22 to continue the fork.
+TvH issued a couple of PRs in the repo, which never got accepted. See
+https://github.com/haskell-grpc-native/http2-grpc-haskell/pull/66.
+
+SW decided while porting everything to stackage lts-22 (September 2024) and
+lts-24 (August 2025) to continue the fork.
+
+We use the branch `meqo`.
+
+# haskell-grpc-native
 
 This organization and repository aim at providing unofficial
 [gRPC](https://grpc.io/) implementations for Haskell using native libraries.
