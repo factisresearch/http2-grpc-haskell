@@ -27,6 +27,7 @@ import Data.ByteString.Char8 (ByteString)
 import Data.Default.Class (def)
 import qualified Network.TLS as TLS
 import qualified Network.TLS.Extra.Cipher as TLS
+import Network.HPACK (Header)
 
 #if MIN_VERSION_base(4,11,0)
 #else
@@ -47,7 +48,7 @@ data GrpcClient = GrpcClient {
   -- ^ Underlying HTTP2 client.
   , _grpcClientAuthority   :: Authority
   -- ^ Authority header of the server the client is connected to.
-  , _grpcClientHeaders     :: [(ByteString, ByteString)]
+  , _grpcClientHeaders     :: [Header]
   -- ^ Extra HTTP2 headers to pass to every call (e.g., authentication tokens).
   , _grpcClientTimeout     :: Timeout
   -- ^ Timeout for RPCs.
@@ -74,7 +75,7 @@ data Address = AddressTCP HostName PortNumber
 data GrpcClientConfig = GrpcClientConfig {
     _grpcClientConfigAddress         :: !Address
   -- ^ Address of the server
-  , _grpcClientConfigHeaders         :: ![(ByteString, ByteString)]
+  , _grpcClientConfigHeaders         :: ![Header]
   -- ^ Extra HTTP2 headers to pass to every call (e.g., authentication tokens).
   , _grpcClientConfigTimeout         :: !Timeout
   -- ^ Timeout for RPCs.
@@ -100,21 +101,7 @@ type UseTlsOrNot = Bool
 
 tlsSettings :: UseTlsOrNot -> HostName -> PortNumber -> Maybe TLS.ClientParams
 tlsSettings False _ _ = Nothing
-tlsSettings True host port = Just $ TLS.ClientParams {
-          TLS.clientWantSessionResume    = Nothing
-        , TLS.clientUseMaxFragmentLength = Nothing
-        , TLS.clientServerIdentification = (host, ByteString.pack $ show port)
-        , TLS.clientUseServerNameIndication = True
-        , TLS.clientShared               = def
-        , TLS.clientHooks                = def { TLS.onServerCertificate = \_ _ _ _ -> return []
-                                               }
-        , TLS.clientSupported            = def { TLS.supportedCiphers = TLS.ciphersuite_default }
-        , TLS.clientDebug                = def
-#if MIN_VERSION_tls(1,5,0)
-        , TLS.clientEarlyData            = Nothing
-#endif
-        }
-
+tlsSettings True host port = Just $ TLS.defaultParamsClient host (ByteString.pack $ show port)
 
 setupGrpcClient :: GrpcClientConfig -> ClientIO GrpcClient
 setupGrpcClient config = do

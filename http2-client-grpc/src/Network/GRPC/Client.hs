@@ -103,6 +103,11 @@ import "http2-client" Network.HTTP2.Client hiding (next)
 import Network.HTTP2.Client.Helpers
 import Data.IORef
 
+
+-- Starting with http2-client version 5.2, header names became case insensitive (the
+-- correct modelling). We only support version 5.2 and later in this fork.
+
+type HeaderList = [Header]
 type CIHeaderList = [(CI ByteString, ByteString)]
 
 -- | A reply.
@@ -152,7 +157,7 @@ waitReply conn rpc decoding stream flowControl =
        return (hdrs2, trls2, res)
 
 headerstoCIHeaders :: HeaderList -> CIHeaderList
-headerstoCIHeaders hdrs = [(CI.mk k, v) | (k,v) <- hdrs]
+headerstoCIHeaders = id
 
 -- | Exception raised when a ServerStreaming RPC results in a decoding
 -- error.
@@ -197,10 +202,10 @@ open conn authority extraheaders timeout encoding decoding call = do
     let request = [ (":method", "POST")
                   , (":scheme", "http")
                   , (":authority", authority)
-                  , (":path", path rpc) 
-                  , (CI.original grpcTimeoutH, showTimeout timeout)
-                  , (CI.original grpcEncodingH, grpcCompressionHV compress)
-                  , (CI.original grpcAcceptEncodingH, mconcat [grpcAcceptEncodingHVdefault, ",", grpcCompressionHV decompress])
+                  , (":path", path rpc)
+                  , (grpcTimeoutH, showTimeout timeout)
+                  , (grpcEncodingH, grpcCompressionHV compress)
+                  , (grpcAcceptEncodingH, mconcat [grpcAcceptEncodingHVdefault, ",", grpcCompressionHV decompress])
                   , ("content-type", grpcContentTypeHV)
                   , ("te", "trailers")
                   ] <> extraheaders
